@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class trajet extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['chauffeur_id','lieu_depart','lieu_arrivee','date'];
 }
