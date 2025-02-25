@@ -40,5 +40,20 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    public function reservationsAsPassager()
+    {
+        return $this->hasMany(Reservation::class, 'passager_id');
+    }
+
+    public function reservationsAsChauffeur()
+    {
+        return $this->hasMany(Reservation::class, 'chauffeur_id');
+    }
+
+    public function trajets()
+    {
+        return $this->hasMany(Trajet::class);
+    }
+
 
 }
