@@ -15,5 +15,20 @@ class Reservation extends Model
         'statut',
         'date_reservation',
     ];
+
+    public function passager()
+    {
+        return $this->belongsTo(User::class, 'passager_id');
+    }
+
+    public function chauffeur()
+    {
+        return $this->belongsTo(User::class, 'chauffeur_id');
+    }
+
+    public function trajet()
+    {
+        return $this->belongsTo(Trajet::class);
+    }
 }
 
