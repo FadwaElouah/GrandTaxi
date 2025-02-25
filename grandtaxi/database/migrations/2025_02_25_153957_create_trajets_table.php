@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('disponibilites', function (Blueprint $table) {
+        Schema::create('trajets', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('chauffeur_id')->constrained('users')->onDelete('cascade');
-            $table->datetime('date_debut');
-            $table->datetime('date_fin');
-            $table->enum('statut', ['disponible', 'occupé']);
+            $table->unsignedBigInteger('chauffeur_id');
+            $table->string('lieu_depart');
+            $table->string('lieu_arrivee'); 
+            $table->date('date');
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('disponibilites');
+        Schema::dropIfExists('trajets');
     }
 };

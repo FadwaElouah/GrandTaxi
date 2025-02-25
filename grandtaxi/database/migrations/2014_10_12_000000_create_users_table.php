@@ -16,9 +16,11 @@ return new class extends Migration
             $table->string('nom');
             $table->string('prenom');
             $table->string('email')->unique();
-            $table->string('mot_de_passe');
+            $table->string('password');
             $table->string('telephone');
             $table->string('photo')->nullable();
+            $table->dateTime('disponible_de')->nullable();
+            $table->dateTime('disponible_a')->nullable();
             $table->enum('role', ['passager', 'chauffeur']);
             $table->timestamps();
         });
@@ -32,5 +34,5 @@ return new class extends Migration
         Schema::dropIfExists('users');
     }
 
-  
+
 };

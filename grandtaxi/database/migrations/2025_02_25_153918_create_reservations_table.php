@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('reservations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('passager_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('chauffeur_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('trajet_id')->constrained('trajets')->onDelete('cascade');
-            $table->enum('statut', [ 'confirmée', 'annulée']);
-            $table->datetime('date_reservation');
+            $table->unsignedBigInteger('passager_id');
+            $table->unsignedBigInteger('chauffeur_id');
+            $table->unsignedBigInteger('trajet_id');
+            $table->string('statut');
+            $table->date('date_reservation');
             $table->timestamps();
         });
     }
