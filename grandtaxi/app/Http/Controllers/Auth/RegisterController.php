@@ -60,7 +60,7 @@ class RegisterController extends Controller
     auth()->login($user);
 
     // return redirect()->route('dashboard');
-    return redirect()->route('dashboard')->with('success', 'Inscription réussie !');
+    // return redirect()->route('dashboard')->with('success', 'Inscription réussie !');
     return redirect()->route('login');
 
 }

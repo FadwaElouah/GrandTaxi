@@ -30,7 +30,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('register', [RegisterController::class, 'showRegisterForm']);
-Route::post('validation', [RegisterController::class, 'store']);
+Route::post('validation', [RegisterController::class, 'register']);
 
 // Route::middleware(['auth', 'role:chauffeur'])->group(function () {
 //     Route::get('/dashboard-chauffeur', [ChauffeurController::class, 'index'])->name('chauffeur.dashboard');
