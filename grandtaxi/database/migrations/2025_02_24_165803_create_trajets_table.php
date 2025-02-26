@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('trajets', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('chauffeur_id');
+            $table->foreignId('chauffeur_id')->constrained('users')->onDelete('cascade');
             $table->string('lieu_depart');
-            $table->string('lieu_arrivee'); 
-            $table->date('date');
+            $table->string('lieu_arrivee');
+            $table->datetime('date');
             $table->timestamps();
         });
     }
