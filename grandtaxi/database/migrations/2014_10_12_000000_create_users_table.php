@@ -19,8 +19,8 @@ return new class extends Migration
             $table->string('password');
             $table->string('telephone');
             $table->string('photo')->nullable();
-            $table->time('disponible_de')->nullable();
-            $table-> time('disponible_a')->nullable();
+            $table->time('disponible_de')->default('00:00:00');
+            $table->time('disponible_a')->default('00:00:00');
             $table->enum('role', ['passager', 'chauffeur']);
             $table->timestamps();
         });

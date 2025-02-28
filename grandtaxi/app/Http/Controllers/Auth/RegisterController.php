@@ -31,8 +31,8 @@ class RegisterController extends Controller
         'telephone' => 'required|string',
         'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif',
         'role' => 'required|string',
-        'disponible_de' => 'nullable|date_format:H:i',
-        'disponible_a' => 'nullable|date_format:H:i',
+        // 'disponible_de' => 'nullable|date_format:H:i',
+        // 'disponible_a' => 'nullable|date_format:H:i',
 
     ]);
 

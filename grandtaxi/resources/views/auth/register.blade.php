@@ -66,7 +66,7 @@
         </div>
 
         <!-- Disponibilité (Chauffeur uniquement) -->
-        <div class="mt-4">
+        {{-- <div class="mt-4">
             <x-input-label for="disponible_de" :value="__('Disponible de')" />
             <x-text-input id="disponible_de" class="block mt-1 w-full" type="time" name="disponible_de" :value="old('disponible_de')" />
         </div>
@@ -74,7 +74,7 @@
         <div class="mt-4">
             <x-input-label for="disponible_a" :value="__('Disponible à')" />
             <x-text-input id="disponible_a" class="block mt-1 w-full" type="time" name="disponible_a" :value="old('disponible_a')" />
-        </div>
+        </div> --}}
 
         <!-- Password -->
         <div class="mt-4">
