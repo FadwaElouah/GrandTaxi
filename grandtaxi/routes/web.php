@@ -1,22 +1,11 @@
 <?php
 
-use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\BookingController;
+use App\Http\Controllers\DriverController;
 use App\Http\Controllers\ProfileController;
+use App\Models\Location;
 use Illuminate\Support\Facades\Route;
-
-use App\Http\Controllers\PassagerController;
-use App\Http\Controllers\ChauffeurController;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
+use App\Http\Controllers\Auth\RegisterController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -32,31 +21,79 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('register', [RegisterController::class, 'showRegisterForm']);
-Route::post('validation', [RegisterController::class, 'register']);
+Route::get('/register', [RegisterController::class, 'create'])
+    ->middleware('guest')
+    ->name('register');
+Route::post('/register', [RegisterController::class, 'store'])
+    ->middleware('guest');
 
-// Routes pour le passager
-Route::middleware(['auth', 'role:passager'])->group(function () {
-    Route::get('/passager/dashboard', [PassagerController::class, 'dashboard'])->name('passager.dashboard');
-    Route::get('/passager/trajets', [PassagerController::class, 'listTrajets'])->name('passager.trajets');
-    Route::post('/passager/reserver/{trajet_id}', [PassagerController::class, 'reserver'])->name('passager.reserver');
-    Route::get('/passager/reservations', [PassagerController::class, 'reservations'])->name('passager.reservations');
-    Route::delete('/passager/reservations/{id}/annuler', [PassagerController::class, 'annulerReservation'])->name('passager.annulerReservation');
-    Route::get('/passager/historique', [PassagerController::class, 'historiqueTrajet'])->name('passager.historique');
-    Route::get('/passager/chauffeurs', [PassagerController::class, 'filtrerChauffeurs'])->name('passager.filtrerChauffeurs');
-    Route::get('/passager/chauffeurs/{id}', [PassagerController::class, 'voirChauffeur'])->name('passager.voirChauffeur');
-    Route::post('/passager/creer-reservation', [PassagerController::class, 'creerReservation'])->name('passager.creerReservation');
+
+// Dashboard Routes
+// Route::get('/passenger-dashboard', function () {
+//     return view('passenger-dashboard');
+// })->middleware('auth');
+
+Route::get('/driver-dashboard', function () {
+    return view('driver-dashboard');
+})->middleware('auth')->name('driver-dashboard');
+
+
+// Passenger Routes
+// Route::middleware('auth')->group(function () {
+//     Route::get('/book-trip', [BookingController::class, 'create'])->name('book-trip');
+//     // Route::post('/book-trip', [BookingController::class, 'store']);
+//     Route::get('/trip-history', [BookingController::class, 'history'])->name('trip-history');
+//     Route::post('/cancel-booking/{booking}', [BookingController::class, 'cancel'])->name('cancel-booking');
+// });
+
+// Passenger Dashboard Route
+Route::get('/passenger-dashboard', function () {
+    try {
+        $locations = Location::all();
+        return view('passenger-dashboard', compact('locations'));
+    } catch (\Exception $e) {
+
+        dd($e->getMessage());
+    }
+})->middleware('auth')->name('passenger-dashboard');
+
+
+// Booking Routes
+Route::middleware('auth')->group(function () {
+    Route::get('/book-trip', [BookingController::class, 'create'])->name('book-trip');
+    Route::post('/book-trip', [BookingController::class, 'store'])->name('book-trip.store');
+    Route::get('/trip-history', [BookingController::class, 'history'])->name('trip-history');
+    Route::post('/cancel-booking/{booking}', [BookingController::class, 'cancel'])->name('cancel-booking');
+    Route::get('/filter-drivers', [BookingController::class, 'filterDrivers'])->name('filter-drivers');
+
+});
+
+Route::middleware('auth')->group(function () {
+    // Accepter une réservation
+    Route::post('/driver/bookings/{booking}/accept', [DriverController::class, 'acceptBooking'])
+        ->name('driver.bookings.accept');
+
+    // Refuser une réservation
+    Route::post('/driver/bookings/{booking}/reject', [DriverController::class, 'rejectBooking'])
+        ->name('driver.bookings.reject');
+});
+
+Route::middleware('auth')->group(function () {
+    // Afficher les demandes de trajet
+    Route::get('/trip-requests', [DriverController::class, 'tripRequests'])
+        ->name('driver.trip-requests');
 });
 
 
-// Routes pour le chauffeur
-Route::middleware(['auth', 'role:chauffeur'])->group(function () {
-    Route::get('/chauffeur/dashboard', [ChauffeurController ::class, 'dashboard'])->name('chauffeur.dashboard');
-    Route::get('/chauffeur/accepter/{id}', [ChauffeurController::class, 'accepterReservation'])->name('chauffeur.accepter');
-    Route::post('/chauffeur/refuser/{id}', [ChauffeurController::class, 'refuserReservation'])->name('chauffeur.refuser');
-    Route::get('/chauffeur/disponibilites', [ChauffeurController::class, 'disponibilites'])->name('chauffeur.disponibilites');
-    Route::post('/chauffeur/disponibilites', [ChauffeurController::class, 'mettreAJourDisponibilite'])->name('chauffeur.mettreAJourDisponibilite');
+
+Route::middleware('auth')->group(function () {
+    // Afficher la page de disponibilité
+    Route::get('/availability', [DriverController::class, 'showAvailability'])
+        ->name('driver.availability');
+
+    // Mettre à jour la disponibilité
+    Route::post('/availability', [DriverController::class, 'updateAvailability'])
+        ->name('driver.update-availability');
 });
 
 require __DIR__.'/auth.php';
-
