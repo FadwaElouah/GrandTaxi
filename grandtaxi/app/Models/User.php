@@ -33,7 +33,10 @@ class User extends Authenticatable
       return $this->hasMany(Booking::class, 'passenger_id');
   }
 
-
+  public function driverProfile()
+  {
+      return $this->hasOne(DriverProfile::class);
+  }
     // Réservations où l'utilisateur est chauffeur
     // public function driverProfile()
     // {

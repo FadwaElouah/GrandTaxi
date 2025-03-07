@@ -18,8 +18,12 @@ class BookingController extends Controller
         // return view('bookings.create', compact('locations', 'driverId'));
 
 
+        // $drivers = User::where('role', 'driver')
+        // ->where('is_available', true)
+        // ->get();
         $drivers = User::where('role', 'driver')
-        ->where('is_available', true)
+        ->where('is_available', 1)
+        ->whereNotIn('id', Booking::where('status', 'pending')->pluck('driver_id'))
         ->get();
 
 
@@ -113,21 +117,26 @@ class BookingController extends Controller
     public function filterDrivers(Request $request)
     {
         $locations = Location::all();
-        $drivers = User::where('role', 'driver')
-            ->whereHas('driverProfile', function ($query) use ($request) {
-                if ($request->location) {
-                    $query->where('location_id', $request->location);
-                }
-                if ($request->availability !== '') {
-                    $query->where('is_available', $request->availability);
-                }
-            })
-            ->with('driverProfile.location')
-            ->get();
 
-            if ($drivers->isEmpty()) {
-                return redirect()->back()->with('info', 'No drivers found with the selected criteria.');
-            }
+        $query = User::where('role', 'driver');
+
+        // Filtrer par disponibilité si spécifié
+        if ($request->availability !== null && $request->availability !== '') {
+            $query->where('is_available', $request->availability);
+        }
+
+        // Filtrer par localisation si spécifiée
+        if ($request->location) {
+            $query->whereHas('driverProfile', function ($subquery) use ($request) {
+                $subquery->where('location_id', $request->location);
+            });
+        }
+
+        $drivers = $query->with('driverProfile.location')->get();
+
+        if ($drivers->isEmpty()) {
+            return redirect()->back()->with('info', 'Aucun chauffeur trouvé avec les critères sélectionnés.');
+        }
 
         return view('passenger-dashboard', compact('drivers', 'locations'));
     }

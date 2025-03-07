@@ -174,9 +174,9 @@
                                     <span>{{ $driver->driverProfile->location->name }}</span>
                                 </div>
                                 <div class="flex items-center">
-                                    <i class="fas fa-circle w-6 {{ $driver->driverProfile->is_available ? 'text-green-500' : 'text-red-500' }} text-sm"></i>
-                                    <span class="{{ $driver->driverProfile->is_available ? 'text-green-600' : 'text-red-600' }} font-medium">
-                                        {{ $driver->driverProfile->is_available ? 'Available' : 'Not Available' }}
+                                    <i class="fas fa-circle w-6 {{ $driver->is_available ? 'text-green-500' : 'text-red-500' }} text-sm"></i>
+                                    <span class="{{ $driver->is_available ? 'text-green-600' : 'text-red-600' }} font-medium">
+                                        {{ $driver->is_available ? 'Available' : 'Not Available' }}
                                     </span>
                                 </div>
                             </div>

@@ -37,7 +37,7 @@
                         <label for="driver_id" class="block text-gray-700">Driver</label>
 
                         {{-- Arabic Version --}}
-                        @if ($drivers->count() > 0)
+                        {{-- @if ($drivers->count() > 0)
                             <select name="driver_id" id="driver_id" class="w-full p-2 border rounded-lg">
                                 <option value="">Choose a driver</option>
                                 @foreach ($drivers as $driver)
@@ -49,9 +49,23 @@
                         @endif
 
                         {{-- English Fallback --}}
-                        @if ($drivers->count() == 0)
+                        {{-- @if ($drivers->count() == 0)
                             <p class="text-red-500">No available drivers</p>
-                        @endif
+                        @endif --}} --}}
+                        @if ($drivers->isNotEmpty())
+                        <select name="driver_id" id="driver_id" class="w-full p-2 border rounded-lg">
+                            <option value="">Choose a driver</option>
+                            @foreach ($drivers as $driver)
+                                <option value="{{ $driver->id }}">{{ $driver->name }}</option>
+                            @endforeach
+                        </select>
+                    @else
+                        <div class="p-4 bg-yellow-100 text-yellow-700 rounded-lg">
+                            🚕 No drivers are available at the moment. Please try again later.
+                        </div>
+                    @endif
+
+
                     </div>
                 @endif
 
@@ -59,4 +73,24 @@
             </form>
         </div>
     </div>
+
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let pickup = document.getElementById("pickup_location_id");
+            let destination = document.getElementById("destination_location_id");
+
+            function checkSameLocation() {
+                if (pickup.value === destination.value) {
+                    alert("🚫 Pickup location and Destination cannot be the same.");
+                    destination.value = "";
+                }
+            }
+
+            pickup.addEventListener("change", checkSameLocation);
+            destination.addEventListener("change", checkSameLocation);
+        });
+    </script>
 </x-app-layout>
+
