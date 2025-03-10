@@ -114,33 +114,64 @@ class BookingController extends Controller
     }
 
 
-    public function filterDrivers(Request $request)
-    {
-        $locations = Location::all();
+    // public function filterDrivers(Request $request)
+    // {
+    //     $locations = Location::all();
 
-        $query = User::where('role', 'driver');
+    //     $query = User::where('role', 'driver');
 
-        // Filtrer par disponibilité si spécifié
-        if ($request->availability !== null && $request->availability !== '') {
-            $query->where('is_available', $request->availability);
-        }
+    //     // Filtrer par disponibilité si spécifié
+    //     if ($request->availability !== null && $request->availability !== '') {
+    //         $query->where('is_available', $request->availability);
+    //     }
 
-        // Filtrer par localisation si spécifiée
-        if ($request->location) {
-            $query->whereHas('driverProfile', function ($subquery) use ($request) {
-                $subquery->where('location_id', $request->location);
-            });
-        }
+    //     // Filtrer par localisation si spécifiée
+    //     if ($request->location) {
+    //         $query->whereHas('driverProfile', function ($subquery) use ($request) {
+    //             $subquery->where('location_id', $request->location);
+    //         });
+    //     }
 
-        $drivers = $query->with('driverProfile.location')->get();
+    //     $query->has('driverProfile');
 
-        if ($drivers->isEmpty()) {
-            return redirect()->back()->with('info', 'Aucun chauffeur trouvé avec les critères sélectionnés.');
-        }
+    //     $drivers = $query->with('driverProfile.location')->get();
 
-        return view('passenger-dashboard', compact('drivers', 'locations'));
+    //     if ($drivers->isEmpty()) {
+    //         return redirect()->back()->with('info', 'Aucun chauffeur trouvé avec les critères sélectionnés.');
+    //     }
+
+    //     return view('passenger-dashboard', compact('drivers', 'locations'));
+    // }
+ public function filterDrivers(Request $request)
+{
+    // Debug li ghadi nchufu bih chno jayyin f request
+    // Uncomment had star had shi 7it bghina nchufu parameters li jayyin
+    // dd($request->all());
+
+    $locations = Location::all();
+    $query = User::where('role', 'driver');
+
+    // Filtrer par disponibilité si spécifié
+    if ($request->has('availability') && $request->availability !== '') {
+        // Important: 7it value f select hiya "1" w "0" (strings), khass n7awluha l boolean
+        $query->where('is_available', $request->availability == '1');
     }
 
+    // Filtrer par localisation si spécifiée
+    if ($request->has('location') && $request->location !== '') {
+        $query->whereHas('driverProfile', function ($subquery) use ($request) {
+            $subquery->where('location_id', $request->location);
+        });
+    }
+
+    // S'assurer que tous les chauffeurs ont un profil
+    $query->has('driverProfile');
+
+    $drivers = $query->with('driverProfile.location')->get();
+
+    // Makanredirectiwsh même si kayn zero resultats
+    return view('passenger-dashboard', compact('drivers', 'locations'));
+}
     public function confirmBooking(Booking $booking)
 {
     if ($booking->driver_id !== Auth::id()) {

@@ -18,7 +18,7 @@ class Booking extends Model
         'status',
         'canceled_at',
         'created_at',
-        'updated_at', 
+        'updated_at',
     ];
 
     // Add this to cast scheduled_at as a date
@@ -62,7 +62,14 @@ class Booking extends Model
      return $query->where('status', 'canceled');
  }
 
-
+ public function location()
+ {
+     return $this->belongsTo(Location::class);
+ }
+ public function reviews()
+ {
+     return $this->hasMany(Review::class);
+ }
 
     // {
     //     return $this->belongsTo(Location::class, 'location_id');

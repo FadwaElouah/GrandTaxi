@@ -79,7 +79,6 @@ class DriverController extends Controller
 // تعديل طريقة tripRequests
 public function tripRequests()
 {
-    // استرجاع جميع الحجوزات بحالة "pending" والتي تم تعيين السائق الحالي لها
     $tripRequests = Booking::where('driver_id', auth()->id())
         ->where('status', 'pending')
         ->with(['passenger', 'pickupLocation', 'destinationLocation'])

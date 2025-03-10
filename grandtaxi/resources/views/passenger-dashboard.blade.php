@@ -79,6 +79,24 @@
         }
     </style>
 </head>
+<!-- Navigation Bar -->
+<nav class="bg-black p-4 text-white">
+    <div class="container mx-auto flex justify-between items-center">
+        <a href="/" class="text-2xl font-bold">GrandTaxiGo</a>
+        <div class="flex items-center space-x-4">
+            <a href="/passenger-dashboard" class="hover:text-blue-200">Dashboard</a>
+
+            <a href="/book-trip" class="hover:text-blue-200">Book</a>
+
+
+            <a href="/profile" class="hover:text-blue-200">Profile</a>
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="hover:text-blue-200">Logout</button>
+            </form>
+        </div>
+    </div>
+</nav>
 <body class="bg-gray-100 min-h-screen">
     <div class="container mx-auto p-6">
         <!-- Header Section -->
@@ -100,7 +118,7 @@
                 <i class="fas fa-filter text-black-custom mr-2"></i> Find Your Perfect Ride
             </h2>
             <form action="{{ route('filter-drivers') }}" method="GET">
-                @csrf
+
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div>
                         <label for="location" class="block text-gray-700 font-medium mb-2">Location</label>
@@ -139,7 +157,7 @@
         </div>
 
         <!-- Drivers Display Section -->
-        @if (isset($drivers))
+        {{-- @if (isset($drivers))
             <div class="bg-white rounded-lg shadow-md p-8">
                 <h2 class="text-xl font-semibold mb-6 flex items-center">
                     <i class="fas fa-users text-black-custom mr-2"></i> Available Drivers
@@ -188,7 +206,29 @@
                     @endforeach
                 </div>
             </div>
-        @endif
+        @endif --}}
+
+            <!-- Drivers Display Section -->
+    @if (isset($drivers) && count($drivers) > 0)
+    <div class="bg-white rounded-lg shadow-md p-8">
+        <h2 class="text-xl font-semibold mb-6 flex items-center">
+            <i class="fas fa-users text-black-custom mr-2"></i> Available Drivers
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            @foreach ($drivers as $driver)
+                <!-- Code dyal driver card -->
+            @endforeach
+        </div>
+    </div>
+    @elseif (isset($drivers))
+    <div class="bg-white rounded-lg shadow-md p-8">
+        <div class="text-center py-10">
+            <i class="fas fa-search text-gray-400 text-5xl mb-4"></i>
+            <h3 class="text-xl font-medium text-gray-700 mb-2">Makayn 7ta chauffeur</h3>
+            <p class="text-gray-500">Ma lqinach chauffeurs li kaysatisfiw critères dyalek</p>
+        </div>
+    </div>
+    @endif
     </div>
 </body>
 </html>

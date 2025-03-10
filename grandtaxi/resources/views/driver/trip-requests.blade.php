@@ -1,4 +1,19 @@
 <x-app-layout>
+
+    <!-- Navigation Bar -->
+<nav class="bg-blue-600 p-4 text-white">
+    <div class="container mx-auto flex justify-between items-center">
+        <a href="/" class="text-2xl font-bold">GrandTaxiGo</a>
+        <div class="flex items-center space-x-4">
+            <a href="/driver-dashboard" class="hover:text-blue-200">Dashboard</a>
+            <a href="/profile" class="hover:text-blue-200">Profile</a>
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="hover:text-blue-200">Logout</button>
+            </form>
+        </div>
+    </div>
+</nav>
     <div class="container mx-auto px-4 py-6">
         @if ($tripRequests->isNotEmpty())
             <div class="grid gap-4">

@@ -26,4 +26,5 @@ class Location extends Model
     public function destinationBookings() {
         return $this->hasMany(Booking::class, 'destination_location_id');
     }
+
 }

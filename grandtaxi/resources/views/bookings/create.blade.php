@@ -1,4 +1,24 @@
 <x-app-layout>
+    {{-- <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.5/dist/tailwind.min.css" rel="stylesheet"> --}}
+
+    <!-- Navigation Bar -->
+<nav class="bg-black p-4 text-white">
+    <div class="container mx-auto flex justify-between items-center">
+        <a href="/" class="text-2xl font-bold">GrandTaxiGo</a>
+        <div class="flex items-center space-x-4">
+            <a href="/passenger-dashboard" class="hover:text-blue-200">Dashboard</a>
+
+            <a href="/book-trip" class="hover:text-blue-200">Book</a>
+
+
+            <a href="/profile" class="hover:text-blue-200">Profile</a>
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="hover:text-blue-200">Logout</button>
+            </form>
+        </div>
+    </div>
+</nav>
     <div class="container mx-auto p-6">
         @if (session('success'))
         <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
@@ -68,8 +88,8 @@
 
                     </div>
                 @endif
-
-                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Book Now</button>
+                <button type="submit" class="bg-yellow-700  text-white px-4 py-2 rounded-lg hover:bg-yellow-800">Book Now</button>
+                {{-- <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Book Now</button> --}}
             </form>
         </div>
     </div>
